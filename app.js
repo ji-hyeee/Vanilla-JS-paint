@@ -1,13 +1,16 @@
-// #2.1 2D Context
-
+// #2.2 Recap! 
 const canvas = document.getElementById("jsCanvas");
 
-// JS 에서 캔버스 호출하기
 const ctx = canvas.getContext("2d");
+// 캔버스에 사이즈 주기
+// 2개의 사이즈가 필요하다 css 사이즈 + pixel manipulating 사이즈 <<< 이걸 지정해주기
+canvas.width = 700; // 실제 픽셀 사이즈 ~~~ !
+canvas.height = 700;
 
-// context default color
+// context 색깔
 ctx.strokeStyle = '#2c2c2c'
-// context default pixel
+
+// context 선 굵기
 ctx.lineWidth = 2.5;
 
 let painting = false;
@@ -20,16 +23,21 @@ function startPainting() {
     painting = true;
 }
 
+// 마우스는 항상 움직이고 있고 안 보이는 상태로 path를 만들고 있는 것 !
 function onMouseMove(e) {
     const x = e.offsetX;
     const y = e.offsetY;
     if (!painting) {
+        // path === line
+        console.log("creating path in ", x, y); // 확인용 콘솔
         ctx.beginPath();
         ctx.moveTo(x, y);
     } else {
-        // path 가 시작되어 선을 맹글어준다
+        console.log("creating line in ", x, y); // 확인용 콘솔
+        // 마우스를 움직이다가 마우스를 클릭하고 이어서 움직이면
+        // 화면에서 path 의 시작점부터 선이 생기기 시작해
         ctx.lineTo(x, y);
-        // path 가 화면에 보이도록
+        // stroke 으로 진짜 화면에 보일것이다 
         ctx.stroke();
     }
 };
@@ -38,26 +46,9 @@ function onMouseDown(e) {
     painting = true;
 }
 
-// line logic 은 onMouseDown 함수에서 다룰 것이므로 onMouseUp 함수는 굳이 필요없다
-// function onMouseUp(e) {
-//     stopPainting();
-// }
-
 if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
 }
-
-// MDN canvas
-// 캔버스는 HTML 요소 + Context 를 갖는다
-// Context 는 요소 안에서 픽셀에 접근할 수 있다
-// context 는 변수로 간단하게 만들 수 있다
-
-// Path >>> 기본적인 선
-// 움직이거나 색으로 채울 수 있고, 닫을 수 있음 등등
-// Path 를 만드는 건 기본적으로 선(line)의 시작점을 만드는 것
-// 마우스가 캔버스 위에서 움직이면 선이 그려지고 클릭할 때 선이 끝나는
-
-
